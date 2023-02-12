@@ -1,0 +1,214 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+          crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="collapse navbar-collapse" id="navbarText">
+        <!--Имя, роль ------------------>
+        <div id="navBarUser">
+            <ul class="navbar-nav mr-auto" id="navBar">
+                <li class="nav-item">
+                <span th:id="'navBarId'+${currentUser.id}" class="navbar-text text-white font-weight-bold"
+                      th:text="${currentUser.email}" ><strong></strong>
+                </span>
+                </li>
+                <li class="nav-item">
+                <span class="navbar-text text-white"
+                      th:text="'&nbspwith roles:&nbsp'">
+                </span>
+                </li>
+                <li class="nav-item">
+                <span class="navbar-text text-white "
+                      th:each="role : ${currentUser.roles}"
+                      th:text="${role.getName()} + '&nbsp'">
+                </span>
+                </li>
+            </ul>
+        </div>
+
+        <!--Выход ------------------>
+        <span class="navbar-link">
+            <a class="float-right nav-link text-white" th:href="@{/logout}">Logout</a>
+        </span>
+    </div>
+</nav>
+
+<!--Боковая панель и основная часть ------------------>
+<div class="container-fluid m-0 p-0">
+    <div class="row">
+
+        <!--Боковая панель ------------------>
+        <div class="col-lg-2 m-0 pr-0 pt-2">
+            <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a th:href="@{/admin/users}" class="btn btn-large btn-primary text-left" role="tab"
+                   aria-selected="true">Admin</a>
+                <a th:href="@{/user}" class="btn btn-large text-left" role="tab" aria-selected="false">User</a>
+            </div>
+        </div>
+
+        <!--Основная часть ------------------>
+        <div class="col-lg-10 m-0 pl-0">
+            <div class="container-fluid bg-light m-0">
+                <h1>Admin panel</h1>
+
+                <!--Разделы блока------------------>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#allUsers">All Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#newUser">New User</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <!-----------------------------------Таблица All Users-------------- href="#allUsers" ---->
+                    <div class="tab-pane fade show active" id="allUsers">
+                        <div class="container-fluid bg-white border">
+
+                            <!--Заголовок таблицы------------------>
+                            <div class="row bg-light p-1 pl-3">
+                                <h4>About user</h4>
+                            </div>
+
+                            <table class="table table-striped">
+
+                                <!--                            Первая строчка/ названия столбиков -->
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Age</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+
+                                <!--                            Содержание / строчки-->
+                                <tbody id="data">
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+
+                    <!-----------------------------------Панель создания нового пользователя------ href="#newUser"------------>
+
+                    <div class="tab-pane fade" id="newUser" role="tabpanel" aria-labelledby="profile-tab">
+                        <div class="card">
+                            <h5 class="card-header">Add new user</h5>
+                            <div class="card-body w-50 p-3" style="margin: auto; text-align: center">
+
+                                <form id="newUserForm">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold" for="newFirstName">First name</label>
+                                        <input type="text" class="form-control" id="newFirstName"
+                                               placeholder="First Name"
+                                               name="firstName" value=""/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="font-weight-bold" for="newLastName">Last name</label>
+                                        <input type="text" class="form-control" id="newLastName" placeholder="Last Name"
+                                               name="surname" value=""/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="font-weight-bold" for="newAge">Age</label>
+                                        <input type="number" class="form-control" id="newAge" placeholder="Age"
+                                               name="age"
+                                               value=""/>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="font-weight-bold" for="newEmail">Email</label>
+                                        <input type="text" class="form-control" id="newEmail" placeholder="Email"
+                                               name="username" value=""/>
+                                    </div>
+
+                                    <label class="font-weight-bold" for="newPassword">Password</label>
+                                    <input type="password" id="newPassword" class="form-control"
+                                           aria-describedby="passwordHelpBlock" name="password" autocomplete="off"
+                                           value="" placeholder="Password"/>
+
+                                    <div class="form-group">
+                                        <label for="newRoles" class="form-label fw-bold">Roles</label>
+                                        <select multiple class="form-control" id="newRoles">
+                                            <option th:each="role : ${allRoles}" th:text="${role.name}"
+                                                    th:value="${role.id}"></option>
+                                        </select>
+                                    </div>
+
+                                    <div class="row">
+                                        <button type="button" class="btn btn-success" id="addNewUser"
+                                                style="margin: auto">Add new user
+                                        </button>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--------------------------------------------------------------Создание модальных окон-->
+
+<!--------------------------------------------------------------Изменение пользователя -->
+
+<div class="myEditBlock" id="myEditBlock">
+
+</div>
+
+<!--------------------------------------------------------------Удаление пользователя -->
+
+<div class="myDeleteBlock" id="myDeleteBlock">
+
+</div>
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="../static/newUser.js" th:src="@{/newUser.js}"></script>
+<script type="text/javascript" src="../static/deleteUser.js" th:src="@{/deleteUser.js}"></script>
+<script type="text/javascript" src="../static/editUser.js" th:src="@{/editUser.js}"></script>
+<script type="text/javascript" src="../static/showAllUser.js" th:src="@{/showAllUser.js}"></script>
+</body>
+</html>
+
