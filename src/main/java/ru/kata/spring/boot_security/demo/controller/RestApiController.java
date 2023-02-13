@@ -23,54 +23,47 @@ public class RestApiController {
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-
         List<User> users = userService.getAll();
-
         if (users.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        return ResponseEntity.ok(users);
     }
 
     @PutMapping
     public ResponseEntity<User> saveUser(@RequestBody User user) {
-        HttpHeaders httpHeaders = new HttpHeaders();
-
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
         userService.add(user);
-
-        return new ResponseEntity<>(user, httpHeaders, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         User user = userService.getById(id);
-
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser( @PathVariable("id") Long id) {
         User user = userService.getById(id);
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         userService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.noContent().build();
     }
 
     @PatchMapping
     public ResponseEntity<User> updateUser(@RequestBody User user) {
-        HttpHeaders httpHeaders = new HttpHeaders();
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().build();
         }
         userService.update(user.getId(), user);
-        return new ResponseEntity<>(user, httpHeaders, HttpStatus.OK);
+        return ResponseEntity.ok(user);
     }
 }
